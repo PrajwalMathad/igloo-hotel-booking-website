@@ -1,0 +1,48 @@
+.signin-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.signin-container::before {
+    content: "";
+    background-image: url("../assets/igloo-background-signin.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    opacity: 0.4;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+}
+
+.welcome-line {
+    font-weight: 100;
+    color: #ffa546;
+    position: relative;
+}
+
+.user-form {
+    width: 15%;
+    position: relative;
+}
+.user-form .form-control {   
+    border-color: #ffa546;
+}
+
+.signup-btn-container {
+    display: flex;
+    justify-content: center;
+}
+
+.signup-btn-container .custom-btn {
+    background-color: #ffae5a;
+    color: #fff;
+    border-color: #ffa546;
+}
+
+.user-table-container {
+    margin: 0 2%;
+}
