@@ -1,0 +1,19 @@
+.navbar .container-fluid {
+    flex-wrap: nowrap;
+    padding: 0 14%;
+}
+
+.navbar .navbar-collapse{    
+    display: flex;
+    justify-content: space-between;
+}
+
+.navbar-nav {
+    flex-direction: row;
+}
+
+.signin-link {
+    font-weight: 600;
+    color: #ffae5a;
+    cursor: pointer;
+}

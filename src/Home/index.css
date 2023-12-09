@@ -1,0 +1,29 @@
+.home-container {
+    margin: 5% 12%;
+}
+
+.home-container .search-container {
+    margin: 0 8%;
+    padding: 1em 2em 2em;
+    border: 1px solid #d7d7d7;
+    border-radius: 12px;
+}
+
+.home-container .search-container .search-title {
+    font-size: 2em;
+    font-weight: 500;
+    color: #ffae5a;
+}
+.home-container .search-container .search-box {
+    width: 32%;
+}
+.home-container .search-container .search-box label {
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #ffae5a;
+}
+
+.home-container .search-container .search-go {
+    height: 35px;
+    margin-bottom: 2px;
+}

@@ -38,12 +38,22 @@
   width: 50%;
 }
 
-.drop-container .btn-secondary {
+.custom-btn.btn-secondary {
   background: white;
-  color: black;
+  color: #ffae5a;
   display: flex;
   align-items: center;
-  border: 1px solid #b2babe;
+  border: 1px solid #ffa84a;
+  border-radius: 4px;
+}
+
+.custom-btn.btn-primary {
+  background: #ffae5a;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  border: 1px solid #ffa84a;
+  border-radius: 4px;
 }
 
 .drop-container .btn-secondary .btn-text{ 
