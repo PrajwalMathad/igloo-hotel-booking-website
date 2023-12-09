@@ -12,6 +12,10 @@
     flex-direction: row;
 }
 
+.navbar-brand {
+    font-size: 1.8em;
+}
+
 .signin-link {
     font-weight: 600;
     color: #ffae5a;

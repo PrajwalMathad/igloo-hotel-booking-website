@@ -11,7 +11,7 @@ function HotelList() {
 
     const selectHotel = (hotel) => {
         dispatch(setHotel(hotel));
-        navigate(`/hotel/${hotel.hotel_id}`);
+        navigate(`/Hotel/${hotel.hotel_id}`);
     }
 
     return (

@@ -12,12 +12,12 @@ function Register() {
     });
     const navigate = useNavigate();
     const signup = async () => {
-        // try {
-        //     await AuthService.signup(userDetails);
-        navigate("/Home");
-        // } catch (err) {
-        //     setError(err.message);
-        // }
+        try {
+            await AuthService.signup(userDetails);
+            navigate("/Home");
+        } catch (err) {
+            setError(err.message);
+        }
     };
     return (
         <div className="signin-container">
