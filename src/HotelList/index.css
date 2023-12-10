@@ -1,4 +1,3 @@
-
 .no-hotels-container {
     color: #ffae5a;
     margin: 2% 35%;
@@ -39,6 +38,7 @@
     font-size: 1em;
     color: gray;
 }
+
 .hotel-rating {
     display: flex;
     background-color: #ffae5a;
@@ -55,7 +55,7 @@
 }
 
 .hotel-details-container {
-    margin: 5% 12%;
+    margin: 5% 12% 1%;
 }
 
 .hotel-details-second-container {
@@ -63,7 +63,6 @@
 }
 
 .hotel-details-second-container .hotel-picture {
-    width: 50%;
     border-radius: 8px;
 }
 
@@ -88,6 +87,7 @@
     font-size: 0.6em;
     color: #ffae5a;
 }
+
 .aminity {
     display: flex;
     align-items: center;
@@ -95,10 +95,6 @@
 
 .hotel-details-second-container .hotel-price {
     font-size: 1.8em;
-}
-
-.booking-container {
-    padding: 1em;
 }
 
 .booking-search-container {
@@ -113,4 +109,41 @@
 
 .favouite {
     color: #ffae5a;
+}
+
+.label {
+    color: #ffa546;
+}
+
+.edit-pencil {
+    color: #ffae5a;
+    font-size: 0.6em;
+    cursor: pointer;
+}
+
+.hotel-picture-rating-container {
+    padding: 1em;
+}
+
+.reviews-container {
+    padding: 1em 0;
+}
+
+.hotel-review {
+    border: 1px solid #ffae5a;
+    border-radius: 8px;
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 1em;
+    background-color: #ffae5a;
+    color: #fff;
+    border-top-right-radius: 8px;
+    border-top-left-radius: 8px;
+}
+
+.review-comment {
+    padding: 0.5em 1em;
 }

@@ -25,3 +25,7 @@ export const findHotelById = async (id) => {
     return response.data;
 };
 
+export const updateHotel = async (details) => {
+    const response = await request.put(`${HOTELS_API}/${details.hotel_id}`, details);
+    return response.data;
+};

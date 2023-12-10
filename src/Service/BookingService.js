@@ -11,6 +11,11 @@ export const findBookingsByUser = async (user) => {
     return response.data;
 };
 
+export const findBookingsByHotel = async (hotelId) => {
+    const response = await request.get(`${BOOKINGS_API}/hotel/${hotelId}`);
+    return response.data;
+};
+
 export const getBookingStatus = async (details) => {
     const response = await request.get(`${BOOKINGS_API}/status`, details);
     return response.data;

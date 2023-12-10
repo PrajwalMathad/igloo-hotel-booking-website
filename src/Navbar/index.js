@@ -1,12 +1,29 @@
 import "./index.css";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import * as AuthService from "../Service/AuthService";
 import { FaUserAstronaut } from "react-icons/fa6";
+import { useSelector, useDispatch } from "react-redux";
+import { setCurrentUser } from "../Users/userReducer";
+
 function Navbar() {
     const navigate = useNavigate();
     const currentUser = useSelector((state) => state.userReducer.currentUser);
+    const dispatch = useDispatch();
     const toSignIn = () => {
         navigate('/Signin');
+    }
+
+    const signout = async () => {
+        try {
+            const data = await AuthService.signout();
+            if (data) {
+                dispatch(setCurrentUser(null));
+                navigate("/Signin");
+            } else {
+            }
+        } catch(e) {
+
+        }
     }
 
     const toUserProfile = () => {
@@ -26,10 +43,13 @@ function Navbar() {
                             <span class="signin-link me-4"> Register </span>
                         </div>}
                     {currentUser && currentUser.email &&
-                        <div className="user-name" onClick={e => { e.preventDefault(); toUserProfile() }}>
-                            <FaUserAstronaut className="me-2" />
-                            <div className="me-1">{currentUser.first_name}</div>
-                            <div className="me-1">{currentUser.last_name}</div>
+                        <div>
+                            <div className="user-name" onClick={e => { e.preventDefault(); toUserProfile() }}>
+                                <FaUserAstronaut className="me-2" />
+                                <div className="me-1">{currentUser.first_name}</div>
+                                <div className="me-1">{currentUser.last_name}</div>
+                            </div>
+                            <div className="signin-link float-end" onClick={e => { e.preventDefault(); signout(); }}>Signout</div>
                         </div>}
                 </div>
             </div>

@@ -10,12 +10,16 @@ function Signin() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const signin = async () => {
-        const data = await AuthService.signin(credentials);
-        if (data) {
-            dispatch(setCurrentUser(data));
-            navigate("/Home");
-        } else {
-            setError("Incorrect credentials. Unable to Login.");
+        try {
+            const data = await AuthService.signin(credentials);
+            if (data) {
+                dispatch(setCurrentUser(data));
+                navigate("/Home");
+            } else {
+                setError("Incorrect credentials. Unable to Login.");
+            }
+        } catch(e) {
+
         }
     };
 

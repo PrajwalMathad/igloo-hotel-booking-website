@@ -11,4 +11,8 @@ export const getAvgHotelRating = async (hotelId) => {
     return response.data;
 };
 
+export const findReviewsByHotel = async (hotelId) => {
+    const response = await request.get(`${REVIEWS_API}/hotel/${hotelId}`);
+    return response.data;
+};
 
