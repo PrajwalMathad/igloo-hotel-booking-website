@@ -2,6 +2,7 @@ import "./index.css";
 import { useNavigate } from "react-router-dom";
 import * as AuthService from "../Service/AuthService";
 import { FaUserAstronaut } from "react-icons/fa6";
+import { BiSolidHotel } from "react-icons/bi";
 import { useSelector, useDispatch } from "react-redux";
 import { setCurrentUser } from "../Users/userReducer";
 
@@ -21,7 +22,7 @@ function Navbar() {
                 navigate("/Signin");
             } else {
             }
-        } catch(e) {
+        } catch (e) {
 
         }
     }
@@ -32,7 +33,9 @@ function Navbar() {
     return (
         <nav class="navbar fixed-top bg-body-tertiary">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#/Home">Igloo</a>
+                <a class="navbar-brand" href="#/Home">
+                    <BiSolidHotel className="me-2"/>
+                    Igloo - Hotel Bookings Made Easy!</a>
                 <div class="navbar-collapse" id="navbarNav">
                     <div class="navbar-nav">
                         {/* <a class="nav-link active" aria-current="page" href="#">Home</a> */}

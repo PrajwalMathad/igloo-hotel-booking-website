@@ -66,13 +66,23 @@ function Register() {
                         ...userDetails,
                         phone: e.target.value
                     })} />
-                <input class="form-control mb-4"
+                <select className="form-select mb-4" onChange={(e) => setUserDetails({
+                    ...userDetails,
+                    role: e.target.value
+                })}>
+                    <option value="user">user</option>
+                    <option value="admin">admin</option>
+                    <option value="owner">owner</option>
+                </select>
+
+
+                {/* <input class="form-control mb-4"
                     value={userDetails.role}
                     placeholder="Role"
                     onChange={(e) => setUserDetails({
                         ...userDetails,
                         role: e.target.value
-                    })} />
+                    })} /> */}
                 <div className="signup-btn-container">
                     <button class="btn custom-btn btn-danger" onClick={signup}>
                         Register

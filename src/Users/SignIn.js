@@ -33,7 +33,7 @@ function Signin() {
                 <input class="form-control mb-2" value={credentials.email} placeholder="User Name"
                     onChange={(e) => setCredentials({ ...credentials, email: e.target.value })} />
                 <input class="form-control mb-4" value={credentials.password} placeholder="Password"
-                    onChange={(e) => setCredentials({ ...credentials, password: e.target.value })} />
+                    type="password" onChange={(e) => setCredentials({ ...credentials, password: e.target.value })} />
                 <div className="red-color mb-4">{error ? error : ""}</div>
                 <div className="signup-btn-container">
                     <button class="btn custom-btn btn-secondary me-4" onClick={signin}> Sign In </button>
