@@ -7,15 +7,20 @@ import { setSearchDetails } from "./homeReducer";
 import "./index.css";
 import HotelList from "../HotelList";
 import * as HotelService from "../Service/HotelService";
-import { setHotelList } from "../HotelList/hotelListReducer";
+import { setHotelList, setFullHotelList } from "../HotelList/hotelListReducer";
 
 function Home() {
     const searchDetails = useSelector((state) => state.homeReducer.searchDetails);
+    const currentUser = useSelector((state) => state.userReducer.currentUser);
     const dispatch = useDispatch();
     const search = async () => {
         try {
-            const hotelList = await HotelService.findHotelsByCity(searchDetails.city);
-            dispatch(setHotelList(hotelList));
+            if(searchDetails.city) {
+                const hotelList = await HotelService.findHotelsByCity(searchDetails.city);
+                dispatch(setHotelList(hotelList));
+            } else {
+                fetchHotels();
+            }
         } catch (err) {
             console.log(err);
         }
@@ -23,8 +28,14 @@ function Home() {
 
     const fetchHotels = async () => {
         try {
-            const hotelList = await HotelService.findAllHotels();
-            dispatch(setHotelList(hotelList));
+            if(!currentUser || (currentUser && (currentUser.role !== "owner"))) {
+                const hotelList = await HotelService.findAllHotels();
+                dispatch(setHotelList(hotelList));
+                dispatch(setFullHotelList(hotelList));
+            } else {
+                const hotelList = await HotelService.findHotelsByOwner(currentUser.email);
+                dispatch(setHotelList(hotelList));
+            }
         } catch (err) {
             console.log(err);
         }

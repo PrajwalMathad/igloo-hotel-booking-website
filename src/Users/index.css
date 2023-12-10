@@ -46,3 +46,33 @@
 .user-table-container {
     margin: 0 2%;
 }
+
+.account-container {
+    margin: 5% 18%;
+    display: flex;
+}
+
+.account-container .details-container {
+    width: 75%;
+}
+
+.form-control {
+    border-color: #ffa546;
+}
+
+.label {
+    color: #ffa546;
+}
+.bookings-container {
+    width: 35%;
+}
+
+.bookings-container .booking-item{
+    border: 1px solid #ffa546;
+    border-radius: 8px;
+    padding: 1em;
+}
+
+.hotel-checkin span{
+    color: #ffa546;
+}

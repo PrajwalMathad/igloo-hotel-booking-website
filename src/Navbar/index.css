@@ -1,6 +1,6 @@
 .navbar .container-fluid {
     flex-wrap: nowrap;
-    padding: 0 14%;
+    padding: 0 18%;
 }
 
 .navbar .navbar-collapse{    
@@ -19,5 +19,13 @@
 .signin-link {
     font-weight: 600;
     color: #ffae5a;
+    cursor: pointer;
+}
+
+.navbar-collapse .user-name {
+    display: flex;
+    align-items: center;
+    font-size: 1.2em;
+    font-weight: 500;
     cursor: pointer;
 }

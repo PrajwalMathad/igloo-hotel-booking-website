@@ -1,10 +1,9 @@
 import "./index.css";
-import { FaStar } from "react-icons/fa6";
 import { useSelector, useDispatch } from "react-redux";
 import image from "../assets/hotel-1.avif"
 import { setHotel } from "./hotelListReducer";
 import { useNavigate } from "react-router-dom";
-function HotelList() {
+function HotelList(props) {
     const hotelList = useSelector((state) => state.hotelListReducer.hotelList);
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -24,7 +23,6 @@ function HotelList() {
                             <div className="hotel-details">
                                 <div className="hotel-name">{hotel.name}</div>
                                 <div className="hotel-location">{hotel.location.city}, {hotel.location.state}</div>
-                                <div className="hotel-rating mt-1">4.4<FaStar className="ms-1 mt-1" /></div>
                                 <div className="hotel-price mt-2">${hotel.price} </div>
                                 <div style={{ fontSize: "0.8em" }}>per night</div>
                                 <span style={{ fontSize: "0.8em" }}>includes taxes and fees</span>

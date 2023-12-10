@@ -1,14 +1,18 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
+    fullHotelList: [],
     hotelList: [],
-    hotel: {}
+    hotel: null
 };
 
 const hotelListSlice = createSlice({
     name: "hotelList",
     initialState,
     reducers: {
+        setFullHotelList: (state, action) => {
+            state.fullHotelList = action.payload;
+        },
         setHotelList: (state, action) => {
             state.hotelList = action.payload;
         },
@@ -19,5 +23,5 @@ const hotelListSlice = createSlice({
 });
 
 
-export const { setHotelList, setHotel } = hotelListSlice.actions;
+export const { setHotelList, setHotel, setFullHotelList } = hotelListSlice.actions;
 export default hotelListSlice.reducer;

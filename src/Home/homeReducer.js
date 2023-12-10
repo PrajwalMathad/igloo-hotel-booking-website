@@ -4,7 +4,8 @@ const initialState = {
     searchDetails: {
         city: "",
         from: "",
-        to: ""
+        to: "",
+        rooms: 0
     }
 };
 

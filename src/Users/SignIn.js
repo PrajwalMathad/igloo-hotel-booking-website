@@ -18,6 +18,10 @@ function Signin() {
             setError("Incorrect credentials. Unable to Login.");
         }
     };
+
+    const register = () => {
+        navigate("/Register")
+    }
     return (
         <div className="signin-container">
             <h1 className="mb-4 welcome-line">Welcome to Igloo</h1>
@@ -29,7 +33,7 @@ function Signin() {
                 <div className="red-color mb-4">{error ? error : ""}</div>
                 <div className="signup-btn-container">
                     <button class="btn custom-btn btn-secondary me-4" onClick={signin}> Sign In </button>
-                    <button class="btn custom-btn btn-secondary"> Register </button>
+                    <button class="btn custom-btn btn-secondary" onClick={register}> Register </button>
                 </div>
             </div>
         </div>

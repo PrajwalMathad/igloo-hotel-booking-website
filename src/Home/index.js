@@ -5,6 +5,7 @@ import Home from "./Home";
 import "./index.css";
 import Navbar from "../Navbar";
 import HotelDetails from "../HotelList/HotelDetails";
+import Account from "../Users/Account";
 
 function MainContainer() {
     return (
@@ -16,6 +17,8 @@ function MainContainer() {
                     <Route path="Home" element={<Home />} />
                     <Route path="Hotel/:hotelId" element={
                         <HotelDetails />} />
+                        
+                    <Route path="User" element={<Account />} />
                 </Routes>
             </div>
         </div>

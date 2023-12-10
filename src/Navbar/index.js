@@ -2,11 +2,16 @@ import "./index.css";
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import { FaUserAstronaut } from "react-icons/fa6";
 function Navbar() {
     const navigate = useNavigate();
     const currentUser = useSelector((state) => state.userReducer.currentUser);
     const toSignIn = () => {
         navigate('/Signin');
+    }
+
+    const toUserProfile = () => {
+        navigate('/User')
     }
     return (
         <nav class="navbar fixed-top bg-body-tertiary">
@@ -22,8 +27,10 @@ function Navbar() {
                             <span class="signin-link me-4"> Register </span>
                         </div>}
                     {currentUser && currentUser.email &&
-                        <div>
-                            {currentUser.first_name}
+                        <div className="user-name" onClick={e => { e.preventDefault(); toUserProfile() }}>
+                            <FaUserAstronaut className="me-2" />
+                            <div className="me-1">{currentUser.first_name}</div>
+                            <div className="me-1">{currentUser.last_name}</div>
                         </div>}
                 </div>
             </div>
