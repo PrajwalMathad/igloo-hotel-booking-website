@@ -64,7 +64,7 @@
     color: #ffa546;
 }
 .bookings-container {
-    width: 35%;
+    width: 40%;
 }
 
 .bookings-container .booking-item{
@@ -75,4 +75,9 @@
 
 .hotel-checkin span{
     color: #ffa546;
+}
+
+table .user-row {
+    color: #ffa546;
+    cursor: pointer;
 }

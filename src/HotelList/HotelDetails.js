@@ -1,7 +1,8 @@
 import "./index.css";
 import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
-import { FaStar, FaCircle, FaHeart, FaRegHeart, FaPencil } from "react-icons/fa6";
+import { useNavigate } from "react-router-dom";
+import { FaStar, FaCircle, FaHeart, FaRegHeart, FaPencil, FaTrashCan } from "react-icons/fa6";
 import image from "../assets/hotel-1.avif"
 import { useParams } from "react-router-dom";
 import { setSearchDetails } from "../Home/homeReducer";
@@ -10,11 +11,10 @@ import * as AuthService from "../Service/AuthService";
 import * as BookingService from "../Service/BookingService";
 import * as ReviewService from "../Service/ReviewService";
 import { setHotel } from "../HotelList/hotelListReducer";
-import { setCurrentUser } from "../Users/userReducer";
+import { setCurrentUser, setSelectedUser } from "../Users/userReducer";
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Toast from 'react-bootstrap/Toast';
-import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
 function HotelDetails() {
@@ -24,6 +24,8 @@ function HotelDetails() {
     const [totalPrice, setTotalprice] = useState(null);
     const [fav, setFav] = useState(false);
     const [showToast, setShowToast] = useState(false);
+    const [showEditModal, setShowEditModal] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [hotelRating, setHotelRating] = useState(null);
     const [hotelReviews, setHotelReviews] = useState(null);
     const [canBook, setCanBook] = useState(false);
@@ -33,11 +35,12 @@ function HotelDetails() {
     })
     const { hotelId } = useParams();
     const dispatch = useDispatch();
-    const [showEditModal, setShowEditModal] = useState(false);
+    const navigate = useNavigate();
 
     const closeEditHotelModal = () => setShowEditModal(false);
     const showEditHotelModal = () => setShowEditModal(true);
-
+    const closeDeleteHotelModal = () => setShowDeleteModal(false);
+    const showDeleteHotelModal = () => setShowDeleteModal(true);
     const toggleShowToast = () => setShowToast(!showToast);
 
     const getHotelById = async (hotelId) => {
@@ -132,6 +135,28 @@ function HotelDetails() {
         }
     }
 
+    const deleteHotel = async () => {
+        try {
+            await HotelService.deleteHotel(hotel.hotel_id);
+            closeDeleteHotelModal();
+            navigate("/Home");
+        } catch (err) {
+        }
+    }
+
+    const findUserByEmail = async (email) => {
+        try {
+            const user = await AuthService.findUserByEmail(email);
+            dispatch(setSelectedUser(user));
+            navigate(`/Profile/${user.email}`)
+        } catch (err) {
+        }
+    }
+
+    const toProfilePage = (user) => {
+        findUserByEmail(user);
+    }
+
     useEffect(() => {
         if (searchDetails.from && searchDetails.to) {
             let fromDate = new Date(searchDetails.from);
@@ -174,6 +199,9 @@ function HotelDetails() {
                         </div>}
                         {currentUser && currentUser.role === "owner" && <div className="edit-pencil mt-3 float-end" onClick={e => { e.preventDefault(); showEditHotelModal(fav); }}>
                             <FaPencil />
+                        </div>}
+                        {currentUser && currentUser.role === "admin" && <div className="edit-pencil mt-3 float-end" onClick={e => { e.preventDefault(); showDeleteHotelModal(fav); }}>
+                            <FaTrashCan />
                         </div>}
                     </div>
                     <div className="hotel-location">{hotel.location.street}, {hotel.location.city}, {hotel.location.state}</div>
@@ -244,7 +272,10 @@ function HotelDetails() {
                             return (
                                 <div className="hotel-review mb-3">
                                     <div className="review-header">
-                                        <div>{review.user}</div>
+                                        <div style={{cursor:"pointer"}} onClick={e => {
+                                            e.preventDefault();
+                                            toProfilePage(review.user);
+                                        }}>{review.user}</div>
                                         <div>{review.date}</div>
                                     </div>
                                     <div className="hotel-rating mt-2 ms-3">{review.rating}<FaStar className="ms-1 mt-1" /></div>
@@ -281,9 +312,11 @@ function HotelDetails() {
                         onChange={(e) => setHotelDetails({ ...hotelDetails, description: e.target.value })} />
                     <label className="label" for="price">Price</label>
                     <input id="price" class="form-control mb-2" value={hotelDetails.price} placeholder="Price"
+                        type="number"
                         onChange={(e) => setHotelDetails({ ...hotelDetails, price: e.target.value })} />
                     <label className="label" for="noofrooms">Number of rooms</label>
                     <input id="noofrooms" class="form-control mb-4" value={hotelDetails.total_rooms} placeholder="Number of rooms"
+                        type="number"
                         onChange={(e) => setHotelDetails({ ...hotelDetails, total_rooms: e.target.value })} />
                 </Modal.Body>
                 <Modal.Footer>
@@ -291,6 +324,22 @@ function HotelDetails() {
                         onClick={closeEditHotelModal}> Close </button>
                     <button class="btn custom-btn btn-primary me-2 mt-4"
                         onClick={updateHotelDetails}> Update </button>
+                </Modal.Footer>
+            </Modal>
+            <Modal show={showDeleteModal} onHide={closeDeleteHotelModal} size="lg"
+                aria-labelledby="contained-modal-title-vcenter"
+                centered>
+                <Modal.Header closeButton>
+                    <Modal.Title>Delete Hotel </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    Are you sure you want to delete this hotel?
+                </Modal.Body>
+                <Modal.Footer>
+                    <button class="btn custom-btn btn-secondary me-2 mt-4 ms-4"
+                        onClick={closeDeleteHotelModal}> Close </button>
+                    <button class="btn custom-btn btn-primary me-2 mt-4"
+                        onClick={deleteHotel}> Delete </button>
                 </Modal.Footer>
             </Modal>
         </div>

@@ -25,7 +25,17 @@ export const findHotelById = async (id) => {
     return response.data;
 };
 
+export const createHotel = async (details) => {
+    const response = await request.post(`${HOTELS_API}`, details);
+    return response.data;
+};
+
 export const updateHotel = async (details) => {
     const response = await request.put(`${HOTELS_API}/${details.hotel_id}`, details);
+    return response.data;
+};
+
+export const deleteHotel = async (id) => {
+    const response = await request.delete(`${HOTELS_API}/${id}`);
     return response.data;
 };

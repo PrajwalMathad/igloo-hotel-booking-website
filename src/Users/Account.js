@@ -4,13 +4,15 @@ import * as AuthService from "../Service/AuthService";
 import * as BookingService from "../Service/BookingService";
 import { FaTrashCan } from "react-icons/fa6";
 import { useSelector, useDispatch } from "react-redux";
-import { setCurrentUser, setUserBookings } from "./userReducer";
+import { useNavigate } from "react-router-dom";
+import { setCurrentUser, setUserBookings, setSelectedUser } from "./userReducer";
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Toast from 'react-bootstrap/Toast';
 
 function Account() {
     const currentUser = useSelector((state) => state.userReducer.currentUser);
+    const userList = useSelector((state) => state.userReducer.userList);
     const userBookings = useSelector((state) => state.userReducer.userBookings);
     const fullHotelList = useSelector((state) => state.hotelListReducer.fullHotelList);
     const hotelList = useSelector((state) => state.hotelListReducer.hotelList);
@@ -27,6 +29,7 @@ function Account() {
         favourite_hotels: currentUser.favourite_hotels
     });
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const toggleShowA = () => setShowA(!showA);
 
@@ -80,17 +83,22 @@ function Account() {
         }
     }
 
+    const toProfilePage = (user) => {
+        dispatch(setSelectedUser(user));
+        navigate(`/Profile/${user.email}`)
+    }
+
     useEffect(() => {
         if (currentUser.role === "user") {
             fetchUserBookings();
-        } else {
+        } else if (currentUser.role === "owner") {
             fetchHotelBookingsForOwner();
         }
     }, [])
     return (
         <div style={{ overflowX: "hidden" }}>
             <div className="account-container">
-                <div style={{ width: "40%" }}>
+                <div style={{ width: "32%" }}>
                     <h3 style={{ color: "#ffa546" }}>Account</h3>
                     <div className="details-container">
                         <div className="mb-2"><span className="label">Email:</span> {userDetails.email}</div>
@@ -160,6 +168,39 @@ function Account() {
                                 You don't have any bookings!.
                             </div>}
                     </div>}
+                {currentUser && currentUser.role === "admin" &&
+                    <div>
+                        <h3 style={{ color: "#ffa546" }}>Users:</h3>
+                        <table class="table">
+                            <thead>
+                                <tr style={{ color: "#ffa546" }}>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">First Name</th>
+                                    <th scope="col">Last Name</th>
+                                    <th scope="col">Phone</th>
+                                    <th scope="col">Role</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {userList.map(user => {
+                                    return (
+                                        <tr>
+                                            <th className="user-row" scope="row" onClick={e => {
+                                                e.preventDefault();
+                                                toProfilePage(user);
+                                            }
+                                            }>{user.email}</th>
+                                            <td>{user.first_name}</td>
+                                            <td>{user.last_name}</td>
+                                            <td>{user.phone}</td>
+                                            <td>{user.role}</td>
+                                        </tr>
+                                    )
+                                })}
+                            </tbody>
+                        </table>
+                    </div>
+                }
             </div>
             <Row>
                 <Col md={4}></Col>
