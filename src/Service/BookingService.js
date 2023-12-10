@@ -21,3 +21,8 @@ export const createBooking = async (details) => {
     return response.data;
 };
 
+export const deleteBooking = async (bookingId) => {
+    const response = await request.delete(`${BOOKINGS_API}/${bookingId}`);
+    return response.data;
+};
+

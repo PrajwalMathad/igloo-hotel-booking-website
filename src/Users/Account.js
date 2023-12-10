@@ -2,6 +2,7 @@ import "./index.css";
 import React, { useEffect, useState } from "react";
 import * as AuthService from "../Service/AuthService";
 import * as BookingService from "../Service/BookingService";
+import { FaTrashCan } from "react-icons/fa6";
 import { useSelector, useDispatch } from "react-redux";
 import { setCurrentUser, setUserBookings } from "./userReducer";
 function Account() {
@@ -44,6 +45,17 @@ function Account() {
             return { ...booking, hotel_name: hotel.name, location: hotel.location };
         })
         setBookings(modifiedData);
+    }
+
+    const deleteBooking = async (id) => {
+        try {
+            await BookingService.deleteBooking(id);
+            const index = bookings.findIndex(item => item._id === id);
+            const newBookings = [...bookings];
+            newBookings.splice(index, 1);
+            setBookings(newBookings);
+        } catch (err) {
+        }
     }
 
     useEffect(() => {
@@ -96,7 +108,11 @@ function Account() {
                         {bookings.map(booking => {
                             return (
                                 <div className="booking-item mb-3">
-                                    <div className="hotel-name">{booking.hotel_name}</div>
+                                    <div className="hotel-name">{booking.hotel_name}
+                                        <div className="float-end">
+                                            <FaTrashCan onClick={e => {e.preventDefault(); deleteBooking(booking._id);}}/>
+                                        </div>
+                                    </div>
                                     <div className="hotel-city-name">{booking.location.city}</div>
                                     <div className="display-flex">
                                         <div className="hotel-checkin me-4"><span>From: </span>{booking.check_in_date}</div>

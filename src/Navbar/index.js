@@ -1,7 +1,6 @@
 import "./index.css";
-import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { FaUserAstronaut } from "react-icons/fa6";
 function Navbar() {
     const navigate = useNavigate();
