@@ -17,7 +17,11 @@ export const findBookingsByHotel = async (hotelId) => {
 };
 
 export const getBookingStatus = async (details) => {
-    const response = await request.get(`${BOOKINGS_API}/status`, details);
+    const response = await request.get(`${BOOKINGS_API}/status`, {
+        params: {
+            ...details
+        }
+    });
     return response.data;
 };
 
