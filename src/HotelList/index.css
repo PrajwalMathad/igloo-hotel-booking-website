@@ -72,6 +72,8 @@
 
 .hotel-details-second-container .hotel-picture {
     border-radius: 8px;
+    width: 75%;
+    margin-left: 12%;
 }
 
 .hotel-details-second-container .hotel-details {
@@ -121,6 +123,7 @@
 
 .favouite {
     color: #ffae5a;
+    cursor: pointer;
 }
 
 .label {

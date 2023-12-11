@@ -103,15 +103,28 @@ function HotelDetails() {
         }
     }
 
-    const addToFav = async (fav) => {
+    const addToFav = async () => {
         try {
             if (currentUser) {
-                const user = {
-                    ...currentUser,
-                    favourite_hotels: [...currentUser.favourite_hotels, hotel.hotel_id]
+                let user = {};
+                if (fav) {
+                    let array = [...currentUser.favourite_hotels];
+                    const index = array.indexOf(hotel.hotel_id);
+                    if (index > -1) { // only splice array when item is found
+                        array.splice(index, 1); // 2nd parameter means remove one item only
+                    }
+                    user = {
+                        ...currentUser,
+                        favourite_hotels: array
+                    }
+                } else {
+                    user = {
+                        ...currentUser,
+                        favourite_hotels: [...currentUser.favourite_hotels, hotel.hotel_id]
+                    }
                 }
                 const data = await AuthService.updateUser(user);
-                setFav(true);
+                setFav(!fav);
                 dispatch(setCurrentUser(user));
             }
         } catch (err) {
@@ -291,7 +304,7 @@ function HotelDetails() {
                 </div>
                 <div className="hotel-picture-rating-container">
                     <img className="hotel-picture" alt="text"
-                        src={require(`../assets/${image}.avif`)} />
+                        src={require(`../assets/room.avif`)} />
                     <div className="reviews-container">
                         <div className="review-header-button mb-3">
                             <h3>Reviews</h3>
@@ -391,6 +404,7 @@ function HotelDetails() {
                 <Modal.Body>
                     <label className="label" for="Rating">Rating</label>
                     <input id="Rating" class="form-control mb-2" value={review.rating} placeholder="Rating"
+                        type="number" min="0" max="5"
                         onChange={(e) => setReview({ ...review, rating: e.target.value })} />
                     <label className="label" for="Comment">Comment</label>
                     <textarea id="Comment" class="form-control mb-2" value={review.comment} placeholder="Comment"
