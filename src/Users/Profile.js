@@ -3,13 +3,13 @@ import "./index.css";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setHotel } from "../HotelList/hotelListReducer";
-import image from "../assets/hotel-1.avif"
 function Profile() {
     const selectedUser = useSelector((state) => state.userReducer.selectedUser);
     const fullHotelList = useSelector((state) => state.hotelListReducer.fullHotelList);
     const [favouriteHotels, setFavouriteHotels] = useState([]);
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    let i = 0;
 
     const mapHotelsToFavs = () => {
         const modifiedData = selectedUser.favourite_hotels.map(fav => {
@@ -34,6 +34,11 @@ function Profile() {
                     <h4 className="label me-2 mt-2">Favourite hotels:</h4>
                     <div className="fav-container">
                         {favouriteHotels.length > 0 && favouriteHotels.map(hotel => {
+                            if (i < 8) {
+                                i++;
+                            } else {
+                                i = 0;
+                            }
                             return (
                                 <div className="fav-hotel-card mb-3 me-3"
                                     onClick={e => {
@@ -42,7 +47,7 @@ function Profile() {
                                         navigate(`/Hotel/${hotel.hotel_id}`)
                                     }}>
                                     <div style={{ width: "50%" }}>
-                                        <img className="hotel-picture" alt="text" src={image} />
+                                        <img className="hotel-picture" alt="text" src={require(`../assets/${'H00' + i}.avif`)} />
                                     </div>
                                     <div style={{ width: "50%" }}>
                                         <div className="fav-hotel-name ms-3 me-3">{hotel.name}</div>

@@ -10,9 +10,9 @@ import { setHotel } from "../HotelList/hotelListReducer";
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Toast from 'react-bootstrap/Toast';
-import image from "../assets/hotel-1.avif"
 
 function Account() {
+    let i = 0;
     const currentUser = useSelector((state) => state.userReducer.currentUser);
     const userList = useSelector((state) => state.userReducer.userList);
     const userBookings = useSelector((state) => state.userReducer.userBookings);
@@ -159,7 +159,7 @@ function Account() {
                                         <div className="booking-item mb-3">
                                             <div className="hotel-name">{booking.hotel_name}
                                                 <div className="float-end">
-                                                    <FaTrashCan onClick={e => { e.preventDefault(); deleteBooking(booking._id); }} />
+                                                    <FaTrashCan style={{cursor:"pointer"}} onClick={e => { e.preventDefault(); deleteBooking(booking._id); }} />
                                                 </div>
                                             </div>
                                             <div className="hotel-city-name">{booking.location.city}</div>
@@ -185,6 +185,11 @@ function Account() {
                         <h3 className="label me-2">Favourite hotels</h3>
                         <div className="fav-container">
                             {favouriteHotels.length > 0 && favouriteHotels.map(hotel => {
+                                if (i < 8) {
+                                    i++;
+                                } else {
+                                    i = 0;
+                                }
                                 return (
                                     <div className="fav-hotel-card mb-3"
                                         onClick={e => {
@@ -193,7 +198,7 @@ function Account() {
                                             navigate(`/Hotel/${hotel.hotel_id}`)
                                         }}>
                                         <div style={{ width: "47%" }}>
-                                            <img className="hotel-picture" alt="text" src={image} />
+                                            <img className="hotel-picture" alt="text" src={require(`../assets/${'H00' + i}.avif`)} />
                                         </div>
                                         <div style={{ width: "50%" }}>
                                             <div className="fav-hotel-name ms-3 me-3">{hotel.name}</div>

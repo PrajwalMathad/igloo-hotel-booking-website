@@ -2,8 +2,7 @@ import "./index.css";
 import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaStar, FaCircle, FaHeart, FaRegHeart, FaPencil, FaTrashCan } from "react-icons/fa6";
-import image from "../assets/hotel-1.avif"
+import { FaStar, FaCircle, FaHeart, FaRegHeart, FaPencil, FaTrashCan, FaThumbsUp } from "react-icons/fa6";
 import { useParams } from "react-router-dom";
 import { setSearchDetails } from "../Home/homeReducer";
 import * as HotelService from "../Service/HotelService";
@@ -22,6 +21,7 @@ function HotelDetails() {
     const hotel = useSelector((state) => state.hotelListReducer.hotel);
     const currentUser = useSelector((state) => state.userReducer.currentUser);
     const [totalPrice, setTotalprice] = useState(null);
+    const [image, setImage] = useState("H000");
     const [fav, setFav] = useState(false);
     const [showToast, setShowToast] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
@@ -34,15 +34,15 @@ function HotelDetails() {
     const [hotelDetails, setHotelDetails] = useState({
         ...hotel
     })
+    const { hotelId } = useParams();
     const [review, setReview] = useState({
-        "hotel": hotel.hotel_id,
-        "user": currentUser.email,
+        "hotel": hotel ? hotel.hotel_id : hotelId,
+        "user": currentUser ? currentUser.email : "",
         "rating": "",
         "comment": "",
         "liked_by": [],
         "date": new Date().toJSON().slice(0, 10)
     });
-    const { hotelId } = useParams();
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -201,7 +201,7 @@ function HotelDetails() {
         if (hotelId && !hotel) {
             getHotelById(hotelId);
             getHotelRating(hotelId);
-            getHotelReviews(hotelId)
+            getHotelReviews(hotelId);
         } else {
             if (currentUser && currentUser.favourite_hotels.find(item => item === hotel.hotel_id)) {
                 setFav(true);
@@ -218,7 +218,7 @@ function HotelDetails() {
         <div className="hotel-details-container">
             <div className="hotel-details-second-container">
                 <div className="hotel-details">
-                    <div className="hotel-name">{hotel.name}
+                    <div className="hotel-name">{hotelDetails.name}
                         {currentUser && currentUser.role === "user" && <div title="Favourite" className="favouite float-end" onClick={e => { e.preventDefault(); addToFav(fav); }}>
                             {fav ? <FaHeart /> : <FaRegHeart />}
                         </div>}
@@ -229,13 +229,13 @@ function HotelDetails() {
                             <FaTrashCan />
                         </div>}
                     </div>
-                    <div className="hotel-location">{hotel.location.street}, {hotel.location.city}, {hotel.location.state}</div>
+                    <div className="hotel-location">{hotelDetails.location.street}, {hotelDetails.location.city}, {hotelDetails.location.state}</div>
                     {hotelRating ? <div className="hotel-rating mt-1">{hotelRating}<FaStar className="ms-1 mt-1" /></div> : ""}
                     <h5 className="mt-3">Description:</h5>
-                    <div className="hotel-description">{hotel.description}</div>
+                    <div className="hotel-description">{hotelDetails.description}</div>
                     <h5 className="mt-3">Aminities:</h5>
                     <div className="hotel-aminities">
-                        {hotel.amenities.map(item => {
+                        {hotelDetails.amenities.map(item => {
                             return (
                                 <div className="aminity"><FaCircle className="am-circle me-2 ms-2" />{item}</div>
                             )
@@ -290,7 +290,8 @@ function HotelDetails() {
                         </div>}
                 </div>
                 <div className="hotel-picture-rating-container">
-                    <img className="hotel-picture" alt="text" src={image} />
+                    <img className="hotel-picture" alt="text"
+                        src={require(`../assets/${image}.avif`)} />
                     <div className="reviews-container">
                         <div className="review-header-button mb-3">
                             <h3>Reviews</h3>
@@ -308,8 +309,15 @@ function HotelDetails() {
                                         }}>{review.user}</div>
                                         <div>{review.date}</div>
                                     </div>
-                                    <div className="hotel-rating mt-2 ms-3">{review.rating}<FaStar className="ms-1 mt-1" /></div>
-                                    <div className="review-comment">{review.comment}</div>
+                                    <div className="review-header-button mt-2 ms-3">
+                                        <div className="hotel-rating">{review.rating}<FaStar className="ms-1 mt-1" /></div>
+                                        <div>{review.liked_by.length > 0 &&
+                                            <div className="me-3"> <FaThumbsUp className="mb-1 me-1" />{review.liked_by.length}</div>}
+                                        </div>
+                                    </div>
+                                    <div className="review-comment">
+                                        {review.comment}
+                                    </div>
                                 </div>
                             )
                         })}

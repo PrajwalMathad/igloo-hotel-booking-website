@@ -1,6 +1,5 @@
 import "./index.css";
 import { useSelector, useDispatch } from "react-redux";
-import image from "../assets/hotel-1.avif"
 import { setHotel } from "./hotelListReducer";
 import { useNavigate } from "react-router-dom";
 import * as HotelService from "../Service/HotelService";
@@ -16,6 +15,7 @@ function HotelList(props) {
     const currentUser = useSelector((state) => state.userReducer.currentUser);
     const [showAddModal, setShowAddModal] = useState(false);
     const [showToast, setShowToast] = useState(false);
+    let i = 0;
 
     const closeAddHotelModal = () => setShowAddModal(false);
     const showAddHotelModal = () => setShowAddModal(true);
@@ -59,10 +59,10 @@ function HotelList(props) {
     const fetchHotels = async () => {
         try {
             const hotelList = await HotelService.findAllHotels();
-                dispatch(setHotelList(hotelList));
-                dispatch(setFullHotelList(hotelList));
-                closeAddHotelModal();
-                toggleShowToast();
+            dispatch(setHotelList(hotelList));
+            dispatch(setFullHotelList(hotelList));
+            closeAddHotelModal();
+            toggleShowToast();
         } catch (err) {
             console.log(err);
         }
@@ -79,9 +79,15 @@ function HotelList(props) {
             <div className="hotel-list-container">
                 {
                     hotelList.map(hotel => {
+                        if (i < 8) {
+                            i++;
+                        } else {
+                            i = 0;
+                        }
                         return (
                             <div className="hotel-card mb-3 me-3" onClick={(e) => { e.preventDefault(); selectHotel(hotel) }}>
-                                <div><img className="hotel-picture" alt="text" src={image} /></div>
+                                <div><img className="hotel-picture" alt="text"
+                                    src={require(`../assets/${'H00' + i}.avif`)} /></div>
                                 <div className="hotel-details">
                                     <div className="hotel-name">{hotel.name}</div>
                                     <div className="hotel-location">{hotel.location.city}, {hotel.location.state}</div>
