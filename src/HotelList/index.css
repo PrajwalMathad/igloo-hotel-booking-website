@@ -105,6 +105,10 @@
     font-size: 1.8em;
 }
 
+.review-header-button {
+    display: flex;
+    justify-content: space-between;
+}
 .booking-search-container {
     display: flex;
 }

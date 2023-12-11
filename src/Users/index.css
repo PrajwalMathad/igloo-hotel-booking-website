@@ -48,12 +48,12 @@
 }
 
 .account-container {
-    margin: 5% 18%;
+    margin: 5% 12%;
     display: flex;
 }
 
 .account-container .details-container {
-    width: 75%;
+    width: 95%;
 }
 
 .form-control {
@@ -65,6 +65,7 @@
 }
 .bookings-container {
     width: 40%;
+    padding: 0 2em 0 1em;
 }
 
 .bookings-container .booking-item{
@@ -80,4 +81,50 @@
 table .user-row {
     color: #ffa546;
     cursor: pointer;
+}
+
+.profile-container {    
+    margin: 5% 18%;
+}
+
+.profile-name {
+    font-size: 1.4em;
+}
+
+.fav-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.fav-hotel-name {
+    color: #ffa546;
+    font-size: 1.2em;
+    font-weight: 500;
+}
+
+.fav-hotel-location {
+    color: gray;
+}
+
+.fav-hotel-card {    
+    border: 1px solid #ffa546;
+    padding: 1em;
+    border-radius: 8px;
+    width: 40%;
+    display: flex;
+    cursor: pointer;
+}
+
+.fav-hotel-card .hotel-picture {
+    width: 100%;
+    border-radius: 8px;
+}
+
+.account-container .fav-container{
+    display: block;    
+    width: 92%;
+}
+
+.account-container .fav-hotel-card {
+    width: 100%;
 }

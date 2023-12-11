@@ -6,9 +6,11 @@ import { FaTrashCan } from "react-icons/fa6";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setCurrentUser, setUserBookings, setSelectedUser } from "./userReducer";
+import { setHotel } from "../HotelList/hotelListReducer";
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Toast from 'react-bootstrap/Toast';
+import image from "../assets/hotel-1.avif"
 
 function Account() {
     const currentUser = useSelector((state) => state.userReducer.currentUser);
@@ -28,6 +30,7 @@ function Account() {
         role: currentUser.role,
         favourite_hotels: currentUser.favourite_hotels
     });
+    const [favouriteHotels, setFavouriteHotels] = useState([]);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -39,6 +42,14 @@ function Account() {
             dispatch(setCurrentUser(data));
         } catch (err) {
         }
+    }
+
+    const mapHotelsToFavs = () => {
+        const modifiedData = currentUser.favourite_hotels.map(fav => {
+            const hotel = fullHotelList.find(hotel => hotel.hotel_id === fav);
+            return { ...hotel };
+        })
+        setFavouriteHotels(modifiedData);
     }
 
     const fetchUserBookings = async () => {
@@ -91,6 +102,7 @@ function Account() {
     useEffect(() => {
         if (currentUser.role === "user") {
             fetchUserBookings();
+            mapHotelsToFavs();
         } else if (currentUser.role === "owner") {
             fetchHotelBookingsForOwner();
         }
@@ -98,7 +110,7 @@ function Account() {
     return (
         <div style={{ overflowX: "hidden" }}>
             <div className="account-container">
-                <div style={{ width: "32%" }}>
+                <div style={{ width: "30%" }}>
                     <h3 style={{ color: "#ffa546" }}>Account</h3>
                     <div className="details-container">
                         <div className="mb-2"><span className="label">Email:</span> {userDetails.email}</div>
@@ -167,6 +179,30 @@ function Account() {
                             <div>
                                 You don't have any bookings!.
                             </div>}
+                    </div>}
+                {currentUser && currentUser.role === "user" &&
+                    <div style={{ width: "40%" }} >
+                        <h3 className="label me-2">Favourite hotels</h3>
+                        <div className="fav-container">
+                            {favouriteHotels.length > 0 && favouriteHotels.map(hotel => {
+                                return (
+                                    <div className="fav-hotel-card mb-3"
+                                        onClick={e => {
+                                            e.preventDefault();
+                                            dispatch(setHotel(hotel));
+                                            navigate(`/Hotel/${hotel.hotel_id}`)
+                                        }}>
+                                        <div style={{ width: "47%" }}>
+                                            <img className="hotel-picture" alt="text" src={image} />
+                                        </div>
+                                        <div style={{ width: "50%" }}>
+                                            <div className="fav-hotel-name ms-3 me-3">{hotel.name}</div>
+                                            <div className="fav-hotel-location ms-3 me-3">{hotel.location.street}, {hotel.location.city}, {hotel.location.state}</div>
+                                        </div>
+                                    </div>
+                                )
+                            })}
+                        </div>
                     </div>}
                 {currentUser && currentUser.role === "admin" &&
                     <div>

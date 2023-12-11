@@ -26,6 +26,7 @@ function HotelDetails() {
     const [showToast, setShowToast] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [showReviewModal, setShowReviewModal] = useState(false);
     const [hotelRating, setHotelRating] = useState(null);
     const [hotelReviews, setHotelReviews] = useState(null);
     const [canBook, setCanBook] = useState(false);
@@ -33,6 +34,14 @@ function HotelDetails() {
     const [hotelDetails, setHotelDetails] = useState({
         ...hotel
     })
+    const [review, setReview] = useState({
+        "hotel": hotel.hotel_id,
+        "user": currentUser.email,
+        "rating": "",
+        "comment": "",
+        "liked_by": [],
+        "date": new Date().toJSON().slice(0, 10)
+    });
     const { hotelId } = useParams();
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -41,6 +50,8 @@ function HotelDetails() {
     const showEditHotelModal = () => setShowEditModal(true);
     const closeDeleteHotelModal = () => setShowDeleteModal(false);
     const showDeleteHotelModal = () => setShowDeleteModal(true);
+    const closeReviewHotelModal = () => setShowReviewModal(false);
+    const showReviewHotelModal = () => setShowReviewModal(true);
     const toggleShowToast = () => setShowToast(!showToast);
 
     const getHotelById = async (hotelId) => {
@@ -120,7 +131,11 @@ function HotelDetails() {
     const getHotelReviews = async (hotelId) => {
         try {
             const reviews = await ReviewService.findReviewsByHotel(hotelId);
-            setHotelReviews(reviews);
+            if (reviews && reviews.message) {
+                setHotelReviews([]);
+            } else {
+                setHotelReviews(reviews);
+            }
         } catch (err) {
             console.log(err);
         }
@@ -155,6 +170,16 @@ function HotelDetails() {
 
     const toProfilePage = (user) => {
         findUserByEmail(user);
+    }
+
+    const addHotelReview = async () => {
+        try {
+            await ReviewService.createReview(review);
+            getHotelRating(hotel.hotel_id);
+            getHotelReviews(hotel.hotel_id);
+            closeReviewHotelModal();
+        } catch (err) {
+        }
     }
 
     useEffect(() => {
@@ -205,7 +230,7 @@ function HotelDetails() {
                         </div>}
                     </div>
                     <div className="hotel-location">{hotel.location.street}, {hotel.location.city}, {hotel.location.state}</div>
-                    <div className="hotel-rating mt-1">{hotelRating}<FaStar className="ms-1 mt-1" /></div>
+                    {hotelRating ? <div className="hotel-rating mt-1">{hotelRating}<FaStar className="ms-1 mt-1" /></div> : ""}
                     <h5 className="mt-3">Description:</h5>
                     <div className="hotel-description">{hotel.description}</div>
                     <h5 className="mt-3">Aminities:</h5>
@@ -267,12 +292,17 @@ function HotelDetails() {
                 <div className="hotel-picture-rating-container">
                     <img className="hotel-picture" alt="text" src={image} />
                     <div className="reviews-container">
-                        <h3>Reviews</h3>
+                        <div className="review-header-button mb-3">
+                            <h3>Reviews</h3>
+                            <button disabled={currentUser && currentUser.role === 'user' ? false : true}
+                                class="btn custom-btn btn-primary"
+                                onClick={showReviewHotelModal}> Add Review </button>
+                        </div>
                         {hotelReviews && hotelReviews.map(review => {
                             return (
                                 <div className="hotel-review mb-3">
                                     <div className="review-header">
-                                        <div style={{cursor:"pointer"}} onClick={e => {
+                                        <div style={{ cursor: "pointer" }} onClick={e => {
                                             e.preventDefault();
                                             toProfilePage(review.user);
                                         }}>{review.user}</div>
@@ -283,6 +313,8 @@ function HotelDetails() {
                                 </div>
                             )
                         })}
+                        {hotelReviews && hotelReviews.length === 0 &&
+                            <div>There are no reviews for this hotel!</div>}
                     </div>
                 </div>
             </div>
@@ -340,6 +372,27 @@ function HotelDetails() {
                         onClick={closeDeleteHotelModal}> Close </button>
                     <button class="btn custom-btn btn-primary me-2 mt-4"
                         onClick={deleteHotel}> Delete </button>
+                </Modal.Footer>
+            </Modal>
+            <Modal show={showReviewModal} onHide={closeReviewHotelModal} size="lg"
+                aria-labelledby="contained-modal-title-vcenter"
+                centered>
+                <Modal.Header closeButton>
+                    <Modal.Title>Hotel Review</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <label className="label" for="Rating">Rating</label>
+                    <input id="Rating" class="form-control mb-2" value={review.rating} placeholder="Rating"
+                        onChange={(e) => setReview({ ...review, rating: e.target.value })} />
+                    <label className="label" for="Comment">Comment</label>
+                    <textarea id="Comment" class="form-control mb-2" value={review.comment} placeholder="Comment"
+                        onChange={(e) => setReview({ ...review, comment: e.target.value })} />
+                </Modal.Body>
+                <Modal.Footer>
+                    <button class="btn custom-btn btn-secondary me-2 mt-4 ms-4"
+                        onClick={closeReviewHotelModal}> Close </button>
+                    <button class="btn custom-btn btn-primary me-2 mt-4"
+                        onClick={addHotelReview}> Add Review </button>
                 </Modal.Footer>
             </Modal>
         </div>

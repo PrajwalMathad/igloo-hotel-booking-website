@@ -16,3 +16,8 @@ export const findReviewsByHotel = async (hotelId) => {
     return response.data;
 };
 
+export const createReview = async (review) => {
+    const response = await request.post(`${REVIEWS_API}`, review );
+    return response.data;
+};
+
