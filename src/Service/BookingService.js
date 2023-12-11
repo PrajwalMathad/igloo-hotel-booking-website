@@ -2,7 +2,7 @@ import axios from "axios";
 const request = axios.create({
     withCredentials: true,
 });
-export const BASE_API = "http://localhost:4000/api";
+export const BASE_API = process.env.REACT_APP_API_BASE;
 export const BOOKINGS_API = `${BASE_API}/bookings`;
 
 
