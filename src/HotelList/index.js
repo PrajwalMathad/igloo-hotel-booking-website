@@ -77,7 +77,10 @@ function HotelList(props) {
                 </div>
             }
             <div className="hotel-list-container">
-                {
+                {hotelList.length === 0 ?
+                    <div className="no-hotels-container">
+                        No hotels in this city!
+                    </div> :
                     hotelList.map(hotel => {
                         if (i < 8) {
                             i++;
@@ -98,10 +101,6 @@ function HotelList(props) {
                             </div>)
                     })
                 }
-                {hotelList.length === 0 &&
-                    <div className="no-hotels-container">
-                        No hotels in this city!
-                    </div>}
             </div>
             <Row>
                 <Col md={4}></Col>

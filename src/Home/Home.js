@@ -19,7 +19,11 @@ function Home() {
         try {
             if (searchDetails.city) {
                 const hotelList = await HotelService.findHotelsByCity(searchDetails.city);
-                dispatch(setHotelList(hotelList));
+                if(hotelList && hotelList.message) {
+                    dispatch(setHotelList([]));
+                } else {
+                    dispatch(setHotelList(hotelList));
+                }
             } else {
                 fetchHotels();
             }
@@ -32,11 +36,19 @@ function Home() {
         try {
             if (!currentUser || (currentUser && (currentUser.role !== "owner"))) {
                 const hotelList = await HotelService.findAllHotels();
-                dispatch(setHotelList(hotelList));
-                dispatch(setFullHotelList(hotelList));
+                if(hotelList && hotelList.message) {
+                    dispatch(setHotelList([]));
+                } else {
+                    dispatch(setHotelList(hotelList));
+                    dispatch(setFullHotelList(hotelList));
+                }
             } else {
                 const hotelList = await HotelService.findHotelsByOwner(currentUser.email);
-                dispatch(setHotelList(hotelList));
+                if(hotelList && hotelList.message) {
+                    dispatch(setHotelList([]));
+                } else {
+                    dispatch(setHotelList(hotelList));
+                }
             }
         } catch (err) {
             console.log(err);
