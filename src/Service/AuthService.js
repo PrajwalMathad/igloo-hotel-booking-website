@@ -5,6 +5,12 @@ const request = axios.create({
 export const BASE_API = process.env.REACT_APP_API_BASE;
 export const USERS_API = `${BASE_API}/users`;
 
+export const wakeUp = async () => {
+    const response = await request.get(`${BASE_API}`, );
+    console.log(response);
+    return response.data;
+};
+
 export const signin = async (credentials) => {
     const response = await request.post(`${USERS_API}/signin`, credentials);
     console.log(response);

@@ -64,7 +64,16 @@ function Home() {
         }
     }
 
+    const wakeUpServer = async () => {
+        try {
+            await AuthService.wakeUp();
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
     useEffect(() => {
+        wakeUpServer();
         fetchHotels();
         fetchUsers();
     }, [])
